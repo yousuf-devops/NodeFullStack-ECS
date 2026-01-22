@@ -1,118 +1,468 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags always come first -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="Sathyanesh Krishnan">
-
-    <title>Simple API Test</title>
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="highlight/styles/default.css">
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-
-    <script type="text/javascript" src="highlight/highlight.pack.js"></script>
+    <meta name="author" content="Yousuf DevOps">
+    <title>ECS CI/CD Project - Yousuf DevOps</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+    <script src="highlight/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .hero .student-info {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Features Grid */
+        .features-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card p {
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        /* API Testing Section */
+        .api-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .api-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .api-controls {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .form-control-custom {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control-custom:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        textarea.form-control-custom {
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .result-card {
+            background: #1e1e1e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card pre {
+            margin: 0;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+        }
+
+        .result-card code {
+            color: #d4d4d4;
+        }
+
+        .alert-custom {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .architecture h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .architecture-flow {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 2;
+            color: #333;
+            overflow-x: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-
 <body>
+    <script src="lib/jquery/jquery.js"></script>
+    <script src="lib/popper/popper.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
+    <script src="js/MyAjaxLib.js"></script>
 
-    <!-- jQuery first, then Bootstrap JS. -->
-    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-    <script type="text/javascript" src="lib/popper/popper.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="js/MyAjaxLib.js"></script>
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>🚀 ECS CI/CD Project</h1>
+                <p class="subtitle">Automated Deployment Pipeline on AWS</p>
+                <p class="student-info">
+                    👨‍💻 Student: <strong>Yousuf DevOps</strong> | 
+                    📚 Task: <strong>Full Stack CI/CD Pipeline</strong>
+                </p>
+            </div>
+        </div>
 
+        <!-- Alert -->
+        <div class="alert alert-success alert-custom" role="alert" id="MyErrorText" style="display: none;">
+        </div>
 
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2>✨ Project Architecture & Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="icon">📦</span> Containerization</h3>
+                    <p>Application packaged in Docker containers for consistency across all environments. Built with Node.js 18 Alpine for minimal image size.</p>
+                </div>
 
-    <div class="container-fluid">
-       <h1>🚀 My ECS CI/CD Project</h1>
-<h3>Deployed automatically via GitHub Actions</h3>
-<p>Student: Yousuf DevOps | Task: Full Stack CI/CD Pipeline</p>
+                <div class="feature-card">
+                    <h3><span class="icon">☁️</span> AWS ECS Fargate</h3>
+                    <p>Serverless container orchestration with automatic scaling. No EC2 instances to manage - fully managed compute platform.</p>
+                </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="alert alert-success" role="alert" id="MyErrorText">
+                <div class="feature-card">
+                    <h3><span class="icon">⚖️</span> Load Balancer</h3>
+                    <p>Application Load Balancer distributes traffic across containers with health checks and automatic failover capabilities.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3><span class="icon">🔄</span> CI/CD Pipeline</h3>
+                    <p>GitHub Actions automatically builds, tests, and deploys code changes. Every git push triggers automated deployment to production.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3><span class="icon">🗄️</span> Container Registry</h3>
+                    <p>Amazon ECR stores and versions Docker images. Secure, scalable, and integrated with ECS for seamless deployments.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3><span class="icon">🔐</span> Security & IAM</h3>
+                    <p>AWS IAM roles control access. Security groups act as firewalls. Private subnets protect containers from direct internet access.</p>
                 </div>
             </div>
         </div>
 
-
-        <div style="background-color: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0;">
-    <h2>✅ Project Features:</h2>
-    <ul style="text-align: left; max-width: 600px; margin: 0 auto;">
-        <li>✅ Node.js Full Stack Application</li>
-        <li>✅ Docker Containerization</li>
-        <li>✅ Amazon ECS Fargate Deployment</li>
-        <li>✅ Application Load Balancer</li>
-        <li>✅ CI/CD not GitHub Actions</li>
-        <li>✅ Auto-deployment on Git Push</li>
-    </ul>
-</div>
-                </br>
-
-                <h5 class="text-primary">Insert</h5>
-
+        <!-- API Testing Section -->
+        <div class="api-section">
+            <h2>🧪 API Testing Interface</h2>
+            
+            <div class="api-controls">
+                <h5 style="color: #1e3c72; margin-bottom: 20px;">Test REST API Endpoints</h5>
+                
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <button type="button"  id="Action1" class="btn btn-primary" onclick="DemoObj.TryAnyAction();">
-                            POST
-                        </button>
-
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-
-                        <div class="dropdown-menu MyActionSelectList">
-                            <a class="dropdown-item" href="#">POST</a>
-                            <a class="dropdown-item" href="#">PUT</a>
-                            <a class="dropdown-item" href="#">DELETE</a>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">PATCH</a>
-                        </div>
+                    <button type="button" id="Action1" class="btn btn-custom dropdown-toggle" data-toggle="dropdown">
+                        POST
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" onclick="updateAction('POST')">POST</a>
+                        <a class="dropdown-item" href="#" onclick="updateAction('PUT')">PUT</a>
+                        <a class="dropdown-item" href="#" onclick="updateAction('DELETE')">DELETE</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="updateAction('PATCH')">PATCH</a>
                     </div>
-
-                    <input type="text"  id="MyActionUri" class="form-control" aria-label="Text input with segmented dropdown button"
-                        placeholder="Enter the URI for the selected action" value="/v1/product">
+                    
+                    <input type="text" id="MyActionUri" class="form-control form-control-custom" 
+                           placeholder="Enter API endpoint..." value="/v1/product" style="margin-left: 10px;">
                 </div>
 
-                <div>
-                    <textarea placeholder="Enter your JSON input here..." class="form-control" id="MyInputTextarea" rows="10">
-                    </textarea>
+                <div class="mb-3">
+                    <label style="color: #1e3c72; font-weight: 600; margin-bottom: 10px;">JSON Request Body:</label>
+                    <textarea class="form-control form-control-custom" id="MyInputTextarea" rows="8" 
+                              placeholder='Enter JSON here... Example:
+{
+  "id": 3001,
+  "name": "Test Product",
+  "price": 99.99,
+  "description": "Added via API"
+}'></textarea>
                 </div>
-                </br>
+
+                <button type="button" class="btn btn-custom btn-lg" onclick="DemoObj.TryAnyAction();">
+                    🚀 Execute Request
+                </button>
             </div>
 
-            <div class="col-sm-6 col-lg-6 offset-lg-0">
-                <div class="card">
-                    <div class="card-header text-white bg-info">
-                        API Result
-                    </div>
-                    <div class="card-block">
-                        <pre><code class="json" id="MyJsonResult"></code></pre>
-                    </div>
-                </div>
+            <div class="result-card">
+                <h5 style="color: #d4d4d4; margin-bottom: 15px;">📊 API Response:</h5>
+                <pre><code class="json" id="MyJsonResult">Click "Execute Request" to see results...</code></pre>
             </div>
-
         </div>
 
+        <!-- Architecture Diagram -->
+        <div class="architecture">
+            <h2>🏗️ Deployment Architecture</h2>
+            <div class="architecture-flow">
+┌─────────────────────────────────────────────────────────────┐
+│  👨‍💻 Developer                                                 │
+│     └─> git push origin master                              │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  🔧 GitHub Actions (CI/CD Pipeline)                          │
+│     ├─> Checkout code                                       │
+│     ├─> Build Docker image                                  │
+│     ├─> Push to Amazon ECR                                  │
+│     └─> Deploy to ECS                                       │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  📦 Amazon ECR (Container Registry)                          │
+│     └─> Stores versioned Docker images                     │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  ☁️  Amazon ECS Fargate Cluster                              │
+│     ├─> Pulls latest image from ECR                        │
+│     ├─> Creates new task with updated container            │
+│     └─> Performs rolling deployment                        │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  ⚖️  Application Load Balancer                               │
+│     ├─> Health checks on port 3000                         │
+│     ├─> Routes traffic to healthy tasks                    │
+│     └─> SSL/TLS termination                                │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  🌐 Public Internet                                          │
+│     └─> Users access application                           │
+└─────────────────────────────────────────────────────────────┘
+
+<strong>📊 Infrastructure Details:</strong>
+• Region: us-east-1 (N. Virginia)
+• Cluster: testingCI-CD
+• Service: nodefullstack-task-service-CI-CD
+• Task CPU: 0.5 vCPU | Memory: 1 GB
+• Container Port: 3000
+• Load Balancer: nodejs-app-ci-cd-1201617409.us-east-1.elb.amazonaws.com
+            </div>
+        </div>
     </div>
 
-
     <script>
-        // Initialize tooltip component
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+        function updateAction(action) {
+            document.getElementById('Action1').textContent = action;
+        }
 
-        // Initialize popover component
+        // Initialize tooltips
         $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        // Initialize popovers
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
     </script>
-
 </body>
-
 </html>
