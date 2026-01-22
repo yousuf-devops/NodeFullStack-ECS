@@ -1,5 +1,5 @@
 ## Node Full Stack
-Licensed under the Apache License, Version 2.0  
+Licensed under the Apache License, Version 2.0.0  
   
 ## JavaScript based Full Stack Web Solution
 This is a full stack web solution (with responsive web page) written in JavaScript with three-tier architecture. In general applications using three-tier architecture provides many benefits such as speed of development, scalability, performance, and availability of the web solution etc. Using **Node.js** for the application add additional benefits and flexibility.  **We can use same programing language (JavaScript) across the stack**, therefore, **all developers can easily understand and collaborate**. FYI: The purpose of this demo is purely educational, no security aspect has considered with it.  
