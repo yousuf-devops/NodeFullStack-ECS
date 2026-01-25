@@ -4,30 +4,26 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - echo Build started on `date`
       - aws --version
-      - REPOSITORY_URI=710144691230.dkr.ecr.us-east-1.amazonaws.com/nodefullstack-ecs
       - AWS_ACCOUNT_ID=710144691230
       - AWS_DEFAULT_REGION=us-east-1
-      - echo Logging into ECR...
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodefullstack-ecs
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
-  
+      - IMAGE_TAG=$COMMIT_HASH
+
   build:
     commands:
-      - echo Build phase started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-  
+      - echo Build started on `date`
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images to ECR...
-      - docker push $REPOSITORY_URI:latest
+      - echo Pushing images to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
+      - docker push $REPOSITORY_URI:latest
+      - echo Writing imagedefinitions.json
       - printf '[{"name":"code-pipeline","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
 
